@@ -254,7 +254,7 @@
       .perso-grid, .miniatures-grid { grid-template-columns: 1fr; gap: 30px; }
       .nav-arrow { padding: 10px 15px; font-size: 1.5em; }
       .prev-arrow { left: 15px; } .next-arrow { right: 15px; }
-      /* CORRECTION BOUTON RETOUR MOBILE */
+      /* CORRECTION BOUTON RETOUR MOBILE PORTRAIT */
       .nav-button {
         top: 15px;
         transform: none;
@@ -267,19 +267,53 @@
       }
     }
     
-    /* MODE PAYSAGE - Correction supplémentaire pour petite hauteur */
+    /* MODE PAYSAGE - SOLUTION RADICALE */
     @media (max-width: 768px) and (max-height: 500px) {
       header {
-        padding: 15px 20px;
+        padding: 10px 20px 15px 20px;
+        position: relative;
+        text-align: left;
+        padding-left: 20px;
       }
       .nav-button {
-        top: 10px;
-        padding: 6px 12px;
-        font-size: 0.8em;
+        position: static;
+        display: block;
+        width: fit-content;
+        margin: 0 0 10px 0;
+        transform: none;
+        top: auto;
+        left: auto;
+        padding: 5px 12px;
+        font-size: 0.75em;
       }
       header h1 {
-        font-size: 1.8em;
-        margin-top: 35px;
+        font-size: 1.4em;
+        margin-top: 0;
+        margin-bottom: 0;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+      /* Simplifier le titre en mode paysage */
+      #portfolio header h1 {
+        font-size: 1.2em;
+      }
+    }
+    
+    /* MODE PAYSAGE TRÈS PETIT */
+    @media (max-width: 768px) and (max-height: 400px) {
+      header {
+        padding: 8px 20px 12px 20px;
+      }
+      .nav-button {
+        padding: 4px 10px;
+        font-size: 0.7em;
+        margin-bottom: 8px;
+      }
+      header h1 {
+        font-size: 1.2em;
+      }
+      #portfolio header h1 {
+        font-size: 1em;
       }
     }
   </style>
