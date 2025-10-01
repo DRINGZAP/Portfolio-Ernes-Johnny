@@ -64,6 +64,31 @@
     }
     .nav-button:hover { background: #0ff; color: #000; box-shadow: 0 0 10px #0ff; }
     
+    /* BOUTON FLOTTANT - SOLUTION DÉFINITIVE */
+    .floating-back-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,255,255,0.95);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9em;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 2000;
+      box-shadow: 0 0 20px rgba(0,255,255,0.8);
+      border: 2px solid #0ff;
+      transition: all 0.3s;
+      display: none;
+    }
+    .floating-back-btn:hover {
+      background: #0ff;
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0,255,255,1);
+    }
+    
     .menu-container { display: flex; gap: 80px; }
     .menu-card {
       background: rgba(26,26,26,0.8); border: 2px solid #0ff; border-radius: 15px; padding: 40px 30px;
@@ -267,38 +292,16 @@
       }
     }
     
-    /* BOUTON FLOTTANT EN MODE PAYSAGE - SOLUTION DÉFINITIVE */
+    /* MODE PAYSAGE - SOLUTION FINALE */
     @media (max-width: 768px) and (max-height: 500px) {
       /* Cacher le bouton normal du header */
       .nav-button {
         display: none !important;
       }
       
-      /* Créer un bouton flottant en bas */
-      .content-section::after {
-        content: '← Retour';
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        background: rgba(0,255,255,0.9);
-        color: #000;
-        padding: 8px 16px;
-        border-radius: 25px;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 0.8em;
-        font-weight: bold;
-        cursor: pointer;
-        z-index: 1000;
-        box-shadow: 0 0 15px rgba(0,255,255,0.8);
-        border: 2px solid #0ff;
-        transition: all 0.3s;
-      }
-      
-      /* Animation hover pour le bouton flottant */
-      .content-section:hover::after {
-        background: #0ff;
-        transform: scale(1.05);
-        box-shadow: 0 0 20px rgba(0,255,255,1);
+      /* Afficher le bouton flottant */
+      .floating-back-btn {
+        display: block !important;
       }
       
       /* Ajuster le header */
@@ -320,6 +323,9 @@
   </style>
 </head>
 <body>
+
+  <!-- BOUTON FLOTTANT (caché par défaut) -->
+  <div class="floating-back-btn" onclick="showSection('home')">← Retour</div>
 
   <!-- MENU D'ACCUEIL -->
   <div id="home" class="home-section">
@@ -689,21 +695,6 @@
         if (e.key === 'ArrowLeft') navigateProject(-1);
         else if (e.key === 'ArrowRight') navigateProject(1);
         else if (e.key === 'Escape') closeProjectLightbox();
-      }
-    });
-    
-    // GESTION DU BOUTON FLOTTANT EN MODE PAYSAGE
-    document.addEventListener('click', (e) => {
-      // Détection du clic sur le bouton flottant (pseudo-element)
-      const section = document.querySelector('.content-section:not(#home)') && document.querySelector('.content-section[style*="block"]');
-      if (section && window.innerWidth <= 768 && window.innerHeight <= 500) {
-        const rect = section.getBoundingClientRect();
-        const x = e.clientX;
-        const y = e.clientY;
-        // Zone approximative du bouton flottant
-        if (x >= 20 && x <= 120 && y >= window.innerHeight - 80 && y <= window.innerHeight - 20) {
-          showSection('home');
-        }
       }
     });
     
