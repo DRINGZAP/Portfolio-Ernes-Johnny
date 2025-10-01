@@ -2,53 +2,739 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Portfolio – Banque d’accueil</title>
+  <title>ERNES JOHNNY – CV & Portfolio</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    body{margin:0;padding:0;font-family:Arial,sans-serif;background:#f9f9f9;color:#333}
-    header{background:#004a7c;color:#fff;padding:20px;text-align:center}
-    .gallery{display:flex;flex-wrap:wrap;gap:20px;padding:20px;justify-content:center}
-    .item{width:280px;text-align:center}
-    .item img{width:100%;border:1px solid #ccc;border-radius:4px}
-    .item h3{margin:8px 0 0;font-size:1em}
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: 'Orbitron', sans-serif;
+      background: #0d0d0d; color: #0ff; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(0,255,255,0.03) 101px),
+                  repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(0,255,255,0.03) 101px);
+      pointer-events: none; z-index: 0;
+    }
+    
+    /* ANIMATIONS & KEYFRAMES */
+    @keyframes glow { from { text-shadow: 0 0 20px #0ff; } to { text-shadow: 0 0 30px #0ff, 0 0 40px #0ff; } }
+    @keyframes divider-pulse {
+      0% { box-shadow: 0 0 20px rgba(0,255,255,0.8), 0 0 40px rgba(0,255,255,0.4); }
+      100% { box-shadow: 0 0 30px rgba(0,255,255,1), 0 0 60px rgba(0,255,255,0.6); }
+    }
+    
+    /* SECTIONS COMMUNES */
+    .home-section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 1; }
+    .content-section { display: none; position: relative; z-index: 1; }
+    .content-section.active { display: block; }
+    
+    /* HEADER */
+    header {
+      background: rgba(17,17,17,0.8); border-bottom: 4px solid #0ff; padding: 30px 20px;
+      text-align: center; position: relative;
+    }
+    header:before, header:after { content: ''; position: absolute; width: 50px; height: 4px; background: #0ff; top: 0; }
+    header:before { left: 20px; } header:after { right: 20px; }
+    header h1 { margin: 0; font-size: 2.5em; letter-spacing: 2px; text-shadow: 0 0 8px #0ff; }
+    
+    /* TITRES & TEXTES */
+    .main-title {
+      font-size: 3em; text-align: center; margin-bottom: 50px; text-shadow: 0 0 20px #0ff;
+      letter-spacing: 3px; animation: glow 2s ease-in-out infinite alternate;
+    }
+    .section-title {
+      text-align: center; font-size: 2em; color: #0ff; margin: 40px 0 20px 0;
+      text-shadow: 0 0 8px #0ff; position: relative; z-index: 1;
+    }
+    .intro, .miniatures-intro {
+      max-width: 800px; margin: 20px auto; text-align: center; font-size: 1.1em; line-height: 1.6;
+      background: rgba(26,26,26,0.8); border: 2px solid #0ff; padding: 20px;
+      box-shadow: 0 0 12px #0ff; position: relative; z-index: 1;
+    }
+    .miniatures-intro { max-width: 600px; margin: 0 auto 40px auto; padding: 15px 20px; font-size: 1em; }
+    
+    /* BOUTONS & CARTES */
+    .nav-button {
+      position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+      background: transparent; border: 2px solid #0ff; color: #0ff; padding: 10px 20px;
+      cursor: pointer; border-radius: 5px; font-family: 'Orbitron', sans-serif; transition: all 0.3s;
+    }
+    .nav-button:hover { background: #0ff; color: #000; box-shadow: 0 0 10px #0ff; }
+    
+    .menu-container { display: flex; gap: 80px; }
+    .menu-card {
+      background: rgba(26,26,26,0.8); border: 2px solid #0ff; border-radius: 15px; padding: 40px 30px;
+      text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0,255,255,0.3); min-width: 200px;
+    }
+    .menu-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 0 40px #0ff; background: rgba(26,26,26,0.9); }
+    .menu-card h2 { font-size: 1.8em; margin: 0 0 20px 0; color: #0ff; }
+    .menu-card p { font-size: 1em; margin: 0; color: #888; }
+    .menu-card:hover p { color: #0ff; }
+    .icon { font-size: 3em; margin-bottom: 20px; display: block; }
+    
+    /* CV */
+    .cv-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: flex; justify-content: center; }
+    .cv-image {
+      max-width: 100%; height: auto; border: 2px solid #0ff; box-shadow: 0 0 20px rgba(0,255,255,0.3);
+      cursor: pointer; transition: all 0.3s;
+    }
+    .cv-image:hover { box-shadow: 0 0 30px #0ff; transform: scale(1.02); }
+    
+    /* SÉPARATEURS */
+    .project-divider {
+      width: 80%; height: 4px; margin: 60px auto;
+      background: linear-gradient(90deg, transparent 0%, #0ff 20%, #fff 50%, #0ff 80%, transparent 100%);
+      box-shadow: 0 0 20px rgba(0,255,255,0.8), 0 0 40px rgba(0,255,255,0.4);
+      position: relative; z-index: 1; animation: divider-pulse 3s ease-in-out infinite alternate;
+    }
+    .project-divider::before, .project-divider::after {
+      content: ''; position: absolute; top: 50%; width: 12px; height: 12px; background: #0ff;
+      border-radius: 50%; transform: translateY(-50%); box-shadow: 0 0 15px #0ff;
+    }
+    .project-divider::before { left: 20%; } .project-divider::after { right: 20%; }
+    
+    /* GALERIE HORIZONTALE */
+    .gallery-horizontal { overflow-x: auto; padding: 20px 0; margin: 20px; scrollbar-width: thin; scrollbar-color: #0ff #1a1a1a; }
+    .gallery-horizontal::-webkit-scrollbar { height: 12px; }
+    .gallery-horizontal::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 6px; }
+    .gallery-horizontal::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, #0ff, #00aacc); border-radius: 6px; box-shadow: 0 0 10px #0ff;
+    }
+    .gallery-horizontal::-webkit-scrollbar-thumb:hover { background: #0ff; box-shadow: 0 0 15px #0ff; }
+    .gallery-content { display: flex; gap: 30px; padding-bottom: 20px; }
+    .item-horizontal {
+      min-width: 300px; background: rgba(26,26,26,0.8); border: 2px solid #0ff; border-radius: 8px;
+      overflow: hidden; box-shadow: 0 0 12px #0ff; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .item-horizontal:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 0 20px #0ff; }
+    .item-horizontal img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .item-horizontal h3 { margin: 12px; font-size: 1.2em; color: #0ff; text-shadow: 0 0 4px #0ff; text-align: center; }
+    
+    /* COMPARATEUR AVANT/APRÈS */
+    .before-after-container { max-width: 800px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 1; }
+    .before-after {
+      position: relative; width: 100%; height: 400px; overflow: hidden; border: 2px solid #0ff; border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.3); cursor: ew-resize; user-select: none;
+    }
+    .before-image, .after-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    .before-after .after-image { z-index: 2; }
+    .slider-line {
+      position: absolute; top: 0; left: 50%; width: 4px; height: 100%;
+      background: linear-gradient(0deg, #0ff, #00ddff); box-shadow: 0 0 15px #0ff, 0 0 25px rgba(0,255,255,0.5);
+      z-index: 10; transform: translateX(-50%);
+    }
+    .slider-handle {
+      position: absolute; top: 50%; left: 50%; width: 40px; height: 40px;
+      background: radial-gradient(circle, #0ff 40%, transparent 70%); border: 3px solid #0ff; border-radius: 50%;
+      transform: translate(-50%, -50%); box-shadow: 0 0 20px #0ff, inset 0 0 20px rgba(0,255,255,0.3); cursor: ew-resize;
+    }
+    .slider-handle::before {
+      content: ''; position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; background: #0ff;
+      border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 10px #0ff;
+    }
+    .before-after-labels {
+      position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between;
+      z-index: 5; pointer-events: none;
+    }
+    .before-after-labels span {
+      background: rgba(0,0,0,0.8); color: #0ff; padding: 8px 15px; border-radius: 20px; font-size: 0.9em;
+      text-shadow: 0 0 8px #0ff; border: 1px solid #0ff; font-weight: bold;
+    }
+    
+    /* GALERIES COMMUNES */
+    .two-column-gallery, .perso-gallery, .cuisine-comparison { max-width: 1200px; margin: 60px auto; padding: 0 40px; position: relative; }
+    .miniatures-section { max-width: 800px; margin: 60px auto; padding: 0 40px; position: relative; z-index: 1; }
+    
+    /* TRAIT FUTURISTE VERTICAL */
+    .futuristic-divider, .cuisine-divider {
+      position: absolute; top: 0; left: 50%; width: 4px; height: 100%;
+      background: linear-gradient(0deg, transparent 0%, #0ff 10%, #fff 50%, #0ff 90%, transparent 100%);
+      box-shadow: 0 0 20px rgba(0,255,255,0.8), 0 0 40px rgba(0,255,255,0.4);
+      transform: translateX(-50%); z-index: 5; animation: divider-pulse 3s ease-in-out infinite alternate;
+    }
+    .cuisine-divider { background: linear-gradient(0deg, transparent 0%, #0ff 15%, #fff 50%, #0ff 85%, transparent 100%); }
+    
+    .divider-dot {
+      position: absolute; left: 50%; width: 12px; height: 12px; background: #0ff; border-radius: 50%;
+      transform: translateX(-50%); box-shadow: 0 0 15px #0ff; z-index: 6;
+    }
+    .dot-top { top: 10%; } .dot-middle { top: 50%; } .dot-bottom { top: 90%; }
+    
+    /* GRILLES */
+    .gallery-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; position: relative; z-index: 10; }
+    .column { display: flex; flex-direction: column; gap: 30px; }
+    .cuisine-comparison-container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; position: relative; }
+    .cuisine-section { position: relative; z-index: 10; }
+    .cuisine-grid, .miniatures-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .miniatures-grid { gap: 30px; }
+    .perso-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 60px; margin-bottom: 60px; }
+    
+    /* CARTES UNIVERSELLES */
+    .image-card, .cuisine-item, .perso-item, .miniature-item {
+      background: rgba(26,26,26,0.9); border: 2px solid #0ff; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,255,255,0.3); cursor: pointer; transition: all 0.4s ease; backdrop-filter: blur(5px);
+    }
+    .image-card:hover, .perso-item:hover, .miniature-item:hover {
+      transform: translateY(-8px) scale(1.03); box-shadow: 0 0 25px rgba(0,255,255,0.6); border-color: #fff;
+    }
+    .cuisine-item:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 0 25px rgba(0,255,255,0.6); border-color: #fff; }
+    
+    .image-card img, .perso-item img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .cuisine-item img, .miniature-item img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .perso-item img { height: 250px; }
+    .miniature-item img { height: 200px; }
+    
+    /* TITRES DE CARTES */
+    .image-card h3, .perso-item h3 {
+      margin: 0; padding: 15px 20px; font-size: 1.1em; color: #0ff; text-shadow: 0 0 8px #0ff; text-align: center;
+      text-transform: uppercase; letter-spacing: 1px; font-weight: 600; background: rgba(0,0,0,0.3);
+    }
+    .cuisine-section h3 {
+      text-align: center; font-size: 1.5em; color: #0ff; text-shadow: 0 0 8px #0ff; margin-bottom: 30px;
+      text-transform: uppercase; letter-spacing: 2px;
+    }
+    .cuisine-item h4, .miniature-item h4 {
+      margin: 0; padding: 12px 15px; font-size: 0.9em; color: #0ff; text-shadow: 0 0 5px #0ff; text-align: center;
+      text-transform: uppercase; letter-spacing: 1px; font-weight: 600; background: rgba(0,0,0,0.4);
+    }
+    .miniature-item h4 { font-size: 1em; }
+    
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9);
+      display: none; align-items: center; justify-content: center; z-index: 1002; overflow: hidden; user-select: none;
+    }
+    .lightbox img { max-width: 85%; max-height: 85%; box-shadow: 0 0 20px #0ff; border-radius: 8px; }
+    .lightbox.show { display: flex; }
+    
+    .close {
+      position: absolute; top: 20px; right: 30px; color: #0ff; font-size: 2em; text-decoration: none;
+      z-index: 1003; user-select: none; cursor: pointer; transition: all 0.3s;
+    }
+    .close:hover { color: #fff; text-shadow: 0 0 10px #0ff; }
+    
+    .nav-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,255,255,0.2);
+      border: 2px solid #0ff; color: #0ff; font-size: 2em; padding: 15px 20px; cursor: pointer;
+      border-radius: 50%; transition: all 0.3s; z-index: 1003; user-select: none; backdrop-filter: blur(10px);
+    }
+    .nav-arrow:hover { background: rgba(0,255,255,0.4); box-shadow: 0 0 20px #0ff; transform: translateY(-50%) scale(1.1); }
+    .nav-arrow.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+    .prev-arrow { left: 30px; } .next-arrow { right: 30px; }
+    
+    .image-counter {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8);
+      color: #0ff; padding: 10px 20px; border-radius: 25px; font-size: 0.9em; border: 1px solid #0ff;
+      font-family: 'Orbitron', sans-serif; z-index: 1003;
+    }
+    
+    /* FOOTER */
+    footer {
+      text-align: center; padding: 15px; background: rgba(17,17,17,0.8); border-top: 4px solid #0ff;
+      color: #888; font-size: 0.9em; position: relative; z-index: 1; margin-top: 40px;
+    }
+    .home-footer { position: fixed; bottom: 0; width: 100%; margin-top: 0; }
+    footer a { color: #0ff; text-decoration: none; font-weight: bold; cursor: pointer; }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .menu-container { flex-direction: column; gap: 40px; }
+      .main-title { font-size: 2em; }
+      .item-horizontal { min-width: 250px; }
+      .before-after { height: 300px; }
+      .gallery-columns { grid-template-columns: 1fr; gap: 30px; }
+      .futuristic-divider { display: none; }
+      .two-column-gallery { padding: 0 20px; }
+      .cuisine-comparison-container { grid-template-columns: 1fr; gap: 40px; }
+      .cuisine-divider { display: none; }
+      .cuisine-comparison, .perso-gallery, .miniatures-section { padding: 0 20px; }
+      .perso-grid, .miniatures-grid { grid-template-columns: 1fr; gap: 30px; }
+      .nav-arrow { padding: 10px 15px; font-size: 1.5em; }
+      .prev-arrow { left: 15px; } .next-arrow { right: 15px; }
+    }
   </style>
 </head>
 <body>
-  <header><h1>Projet d’examen BTS ERA : Banque d’accueil</h1></header>
 
-  <section class="gallery">
-    <div class="item">
-      <img src="Banque-1.png" alt="Banque 1">
-      <h3>Banque – page 1</h3>
+  <!-- MENU D'ACCUEIL -->
+  <div id="home" class="home-section">
+    <h1 class="main-title">ERNES JOHNNY</h1>
+    <div class="menu-container">
+      <div class="menu-card" onclick="showSection('cv')">
+        <div class="icon">👤</div>
+        <h2>CURRICULUM VITAE</h2>
+        <p>Consulter mon CV complet</p>
+      </div>
+      <div class="menu-card" onclick="showSection('portfolio')">
+        <div class="icon">📁</div>
+        <h2>PORTFOLIO</h2>
+        <p>Découvrir mes projets</p>
+      </div>
     </div>
-    <div class="item">
-      <img src="Banque-2.png" alt="Banque 2">
-      <h3>Banque – page 2</h3>
+    <footer class="home-footer">&copy; 2025 Johnny ERNES – Développement & Design</footer>
+  </div>
+
+  <!-- CV -->
+  <div id="cv" class="content-section">
+    <header>
+      <button class="nav-button" onclick="showSection('home')">← Retour</button>
+      <h1>CURRICULUM VITAE</h1>
+    </header>
+    <div class="cv-container">
+      <img src="CV.jpg" alt="CV Johnny Ernes" class="cv-image" onclick="openLightbox('cv-lightbox')">
     </div>
-    <div class="item">
-      <img src="Meuble-1.png" alt="Meuble 1">
-      <h3>Meuble – page 1</h3>
+    <footer>&copy; 2025 Johnny ERNES – <a onclick="showSection('home')">Retour à l'accueil</a></footer>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <div id="portfolio" class="content-section">
+    <header>
+      <button class="nav-button" onclick="showSection('home')">← Retour</button>
+      <h1>PORTFOLIO – ERNES JOHNNY</h1>
+    </header>
+    
+    <div class="intro">
+      <p>Plans A0 de l'étude de la chocolaterie Voisin à l'Hôtel-Dieu de Lyon (sujet d'examen BTS).</p>
     </div>
-    <div class="item">
-      <img src="Meuble-2.png" alt="Meuble 2">
-      <h3>Meuble – page 2</h3>
+    
+    <!-- PLANS A0 -->
+    <div class="gallery-horizontal">
+      <div class="gallery-content">
+        <div class="item-horizontal" onclick="openLightbox('img-implantation')">
+          <img src="Implantation.jpg" alt="Implantation générale"><h3>Implantation générale</h3>
+        </div>
+        <div class="item-horizontal" onclick="openLightbox('img-sol')">
+          <img src="Sol.jpg" alt="Plan du sol"><h3>Plan du sol</h3>
+        </div>
+        <div class="item-horizontal" onclick="openLightbox('img-cloison')">
+          <img src="Cloison.jpg" alt="Cloison & Porte à Galandage"><h3>Cloison & Porte à Galandage</h3>
+        </div>
+        <div class="item-horizontal" onclick="openLightbox('img-menuiseries')">
+          <img src="Menuiseries.jpg" alt="Menuiseries Extérieures"><h3>Menuiseries Extérieures</h3>
+        </div>
+        <div class="item-horizontal" onclick="openLightbox('img-banque1')">
+          <img src="Banque-1.jpg" alt="Banque – Page 1"><h3>Banque – Page 1</h3>
+        </div>
+        <div class="item-horizontal" onclick="openLightbox('img-banque2')">
+          <img src="Banque-2.jpg" alt="Banque – Page 2"><h3>Banque – Page 2</h3>
+        </div>
+        <div class="item-horizontal" onclick="openLightbox('img-meuble1')">
+          <img src="Meuble-1.jpg" alt="Meuble – Page 1"><h3>Meuble – Page 1</h3>
+        </div>
+        <div class="item-horizontal" onclick="openLightbox('img-meuble2')">
+          <img src="Meuble-2.jpg" alt="Meuble – Page 2"><h3>Meuble – Page 2</h3>
+        </div>
+      </div>
     </div>
-    <div class="item">
-      <img src="Implantation.png" alt="Implantation générale">
-      <h3>Implantation générale</h3>
+    
+    <div class="project-divider"></div>
+    
+    <!-- PROJET DEVANTURE -->
+    <h2 class="section-title">PROJET DEVANTURE</h2>
+    <div class="before-after-container">
+      <div class="before-after" id="beforeAfterContainer">
+        <img src="Devanture-avant.jpg" alt="Avant" class="before-image">
+        <img src="Devanture-apres.jpg" alt="Après" class="after-image" id="afterImg">
+        <div class="slider-line" id="sliderLine"><div class="slider-handle" id="sliderHandle"></div></div>
+        <div class="before-after-labels"><span>AVANT</span><span>APRÈS</span></div>
+      </div>
     </div>
-    <div class="item">
-      <img src="Sol.png" alt="Plan du sol">
-      <h3>Plan du sol</h3>
+    
+    <div class="two-column-gallery">
+      <div class="futuristic-divider"></div>
+      <div class="divider-dot dot-top"></div><div class="divider-dot dot-middle"></div><div class="divider-dot dot-bottom"></div>
+      <div class="gallery-columns">
+        <div class="column">
+          <div class="image-card" onclick="openProjectLightbox('devanture', 0)">
+            <img src="croquis-1.jpg" alt="Croquis"><h3>Croquis</h3>
+          </div>
+          <div class="image-card" onclick="openProjectLightbox('devanture', 1)">
+            <img src="Rendu-2.jpg" alt="Devanture 2D"><h3>Devanture 2D</h3>
+          </div>
+          <div class="image-card" onclick="openProjectLightbox('devanture', 2)">
+            <img src="Rendu-4.jpg" alt="Intérieur"><h3>Intérieur</h3>
+          </div>
+          <div class="image-card" onclick="openProjectLightbox('devanture', 3)">
+            <img src="Rendu-6.jpg" alt="Coupe"><h3>Coupe</h3>
+          </div>
+        </div>
+        <div class="column">
+          <div class="image-card" onclick="openProjectLightbox('devanture', 4)">
+            <img src="Rendu-1.jpg" alt="Vue extérieure"><h3>Vue Extérieure</h3>
+          </div>
+          <div class="image-card" onclick="openProjectLightbox('devanture', 5)">
+            <img src="Rendu-3.jpg" alt="Vitrine"><h3>Vitrine</h3>
+          </div>
+          <div class="image-card" onclick="openProjectLightbox('devanture', 6)">
+            <img src="Rendu-5.jpg" alt="Porte ouverte"><h3>Porte Ouverte</h3>
+          </div>
+          <div class="image-card" onclick="openProjectLightbox('devanture', 7)">
+            <img src="Rendu-7.jpg" alt="Armoire"><h3>Armoire</h3>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="item">
-      <img src="Cloison.png" alt="Cloison et porte à galandage">
-      <h3>Cloison et porte à galandage</h3>
+    
+    <div class="project-divider"></div>
+    
+    <!-- PROJET CUISINE -->
+    <h2 class="section-title">PROJET CUISINE</h2>
+    <div class="intro">
+      <p>Idées d'aménagement d'une cuisine réalisées en stage.</p>
     </div>
-    <div class="item">
-      <img src="Menuiseries.png" alt="Menuiseries extérieures">
-      <h3>Menuiseries extérieures</h3>
+    <div class="cuisine-comparison">
+      <div class="cuisine-divider"></div>
+      <div class="cuisine-comparison-container">
+        <div class="cuisine-section">
+          <h3>Cuisine Originale</h3>
+          <div class="cuisine-grid">
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 0)">
+              <img src="Cuisine-base1.jpg" alt="Vue générale"><h4>Vue générale</h4>
+            </div>
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 1)">
+              <img src="Cuisine-base2.jpg" alt="Angle cuisine"><h4>Angle cuisine</h4>
+            </div>
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 2)">
+              <img src="Cuisine-base3.jpg" alt="Zone évier"><h4>Zone évier</h4>
+            </div>
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 3)">
+              <img src="Cuisine-base4.jpg" alt="Espace cuisson"><h4>Espace cuisson</h4>
+            </div>
+          </div>
+        </div>
+        <div class="cuisine-section">
+          <h3>Idées d'Aménagement</h3>
+          <div class="cuisine-grid">
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 4)">
+              <img src="Cuisine-idee1.jpg" alt="Proposition 1 A"><h4>Proposition 1 - Vue A</h4>
+            </div>
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 5)">
+              <img src="Cuisine-idee4.jpg" alt="Proposition 1 B"><h4>Proposition 1 - Vue B</h4>
+            </div>
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 6)">
+              <img src="Cuisine-idee3.jpg" alt="Proposition 2 A"><h4>Proposition 2 - Vue A</h4>
+            </div>
+            <div class="cuisine-item" onclick="openProjectLightbox('cuisine', 7)">
+              <img src="Cuisine-idee2.jpg" alt="Proposition 2 B"><h4>Proposition 2 - Vue B</h4>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+    
+    <div class="project-divider"></div>
+    
+    <!-- PROJET PERSO -->
+    <h2 class="section-title">PROJET PERSO</h2>
+    <div class="intro">
+      <p>Création de maps sur Fortnite à l'aide d'UEFN et d'Unreal Engine 5. Développement d'environnements 3D avec mécaniques de gameplay.</p>
+    </div>
+    <div class="perso-gallery">
+      <div class="perso-grid">
+        <div class="perso-item" onclick="openProjectLightbox('perso', 0)">
+          <img src="Map-ville.jpg" alt="Map Ville Vue 1"><h3>Map Ville - Vue 1</h3>
+        </div>
+        <div class="perso-item" onclick="openProjectLightbox('perso', 1)">
+          <img src="Map-ville2.jpg" alt="Map Ville Vue 2"><h3>Map Ville - Vue 2</h3>
+        </div>
+        <div class="perso-item" onclick="openProjectLightbox('perso', 2)">
+          <img src="Map-western.jpg" alt="Map Western Vue 1"><h3>Map Western - Vue 1</h3>
+        </div>
+        <div class="perso-item" onclick="openProjectLightbox('perso', 3)">
+          <img src="Map-western2.jpg" alt="Map Western Vue 2"><h3>Map Western - Vue 2</h3>
+        </div>
+        <div class="perso-item" onclick="openProjectLightbox('perso', 4)">
+          <img src="Map-chateau.jpg" alt="Map Château Vue 1"><h3>Map Château - Vue 1</h3>
+        </div>
+        <div class="perso-item" onclick="openProjectLightbox('perso', 5)">
+          <img src="Map-chateau2.jpg" alt="Map Château Vue 2"><h3>Map Château - Vue 2</h3>
+        </div>
+      </div>
+    </div>
+    
+    <div class="miniatures-section">
+      <div class="miniatures-intro">
+        <p>Miniatures de maps réalisées avec Photoshop</p>
+      </div>
+      <div class="miniatures-grid">
+        <div class="miniature-item" onclick="openProjectLightbox('perso', 6)">
+          <img src="Miniature1.jpg" alt="Miniature 1"><h4>Miniature 1</h4>
+        </div>
+        <div class="miniature-item" onclick="openProjectLightbox('perso', 7)">
+          <img src="Miniature2.jpg" alt="Miniature 2"><h4>Miniature 2</h4>
+        </div>
+      </div>
+    </div>
+    
+    <footer>&copy; 2025 Johnny ERNES – <a onclick="showSection('home')">Retour à l'accueil</a></footer>
+  </div>
+
+  <!-- LIGHTBOXES -->
+  <div id="cv-lightbox" class="lightbox">
+    <span class="close" onclick="closeLightbox('cv-lightbox')">&times;</span>
+    <img src="CV.jpg" alt="CV Johnny Ernes" class="zoomable">
+  </div>
+  
+  <div id="img-implantation" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-implantation')">&times;</span>
+    <img src="Implantation.jpg" alt="Implantation générale" class="zoomable">
+  </div>
+  <div id="img-sol" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-sol')">&times;</span>
+    <img src="Sol.jpg" alt="Plan du sol" class="zoomable">
+  </div>
+  <div id="img-cloison" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-cloison')">&times;</span>
+    <img src="Cloison.jpg" alt="Cloison & Porte à Galandage" class="zoomable">
+  </div>
+  <div id="img-menuiseries" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-menuiseries')">&times;</span>
+    <img src="Menuiseries.jpg" alt="Menuiseries Extérieures" class="zoomable">
+  </div>
+  <div id="img-banque1" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-banque1')">&times;</span>
+    <img src="Banque-1.jpg" alt="Banque – Page 1" class="zoomable">
+  </div>
+  <div id="img-banque2" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-banque2')">&times;</span>
+    <img src="Banque-2.jpg" alt="Banque – Page 2" class="zoomable">
+  </div>
+  <div id="img-meuble1" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-meuble1')">&times;</span>
+    <img src="Meuble-1.jpg" alt="Meuble – Page 1" class="zoomable">
+  </div>
+  <div id="img-meuble2" class="lightbox">
+    <span class="close" onclick="closeLightbox('img-meuble2')">&times;</span>
+    <img src="Meuble-2.jpg" alt="Meuble – Page 2" class="zoomable">
+  </div>
+  
+  <div id="project-lightbox" class="lightbox">
+    <span class="close" onclick="closeProjectLightbox()">&times;</span>
+    <div class="nav-arrow prev-arrow" onclick="navigateProject(-1)">‹</div>
+    <div class="nav-arrow next-arrow" onclick="navigateProject(1)">›</div>
+    <img id="project-image" src="" alt="">
+    <div class="image-counter" id="image-counter">1 / 8</div>
+  </div>
+
+  <script>
+    function showSection(sectionName) {
+      ['home', 'cv', 'portfolio'].forEach(s => document.getElementById(s).style.display = 'none');
+      document.getElementById(sectionName).style.display = sectionName === 'home' ? 'flex' : 'block';
+      window.scrollTo(0, 0);
+    }
+    
+    function openLightbox(lightboxId) {
+      const lightbox = document.getElementById(lightboxId);
+      lightbox.classList.add('show');
+      const img = lightbox.querySelector('img');
+      if (img.classList.contains('zoomable')) resetImageTransform(img);
+    }
+    
+    function closeLightbox(lightboxId) {
+      const lightbox = document.getElementById(lightboxId);
+      lightbox.classList.remove('show');
+      const img = lightbox.querySelector('img');
+      if (img.classList.contains('zoomable')) resetImageTransform(img);
+    }
+    
+    function resetImageTransform(img) {
+      img.style.transform = 'scale(1) translate(0px, 0px)';
+      img.style.cursor = 'grab';
+    }
+    
+    const projects = {
+      devanture: [
+        { src: 'croquis-1.jpg', alt: 'Croquis', title: 'Croquis' },
+        { src: 'Rendu-2.jpg', alt: 'Devanture 2D', title: 'Devanture 2D' },
+        { src: 'Rendu-4.jpg', alt: 'Intérieur', title: 'Intérieur' },
+        { src: 'Rendu-6.jpg', alt: 'Coupe', title: 'Coupe' },
+        { src: 'Rendu-1.jpg', alt: 'Vue extérieure', title: 'Vue Extérieure' },
+        { src: 'Rendu-3.jpg', alt: 'Vitrine', title: 'Vitrine' },
+        { src: 'Rendu-5.jpg', alt: 'Porte ouverte', title: 'Porte Ouverte' },
+        { src: 'Rendu-7.jpg', alt: 'Armoire', title: 'Armoire' }
+      ],
+      cuisine: [
+        { src: 'Cuisine-base1.jpg', alt: 'Cuisine originale vue 1', title: 'Vue générale' },
+        { src: 'Cuisine-base2.jpg', alt: 'Cuisine originale vue 2', title: 'Angle cuisine' },
+        { src: 'Cuisine-base3.jpg', alt: 'Cuisine originale vue 3', title: 'Zone évier' },
+        { src: 'Cuisine-base4.jpg', alt: 'Cuisine originale vue 4', title: 'Espace cuisson' },
+        { src: 'Cuisine-idee1.jpg', alt: 'Idée aménagement 1 vue 1', title: 'Proposition 1 - Vue A' },
+        { src: 'Cuisine-idee4.jpg', alt: 'Idée aménagement 2 vue 2', title: 'Proposition 1 - Vue B' },
+        { src: 'Cuisine-idee3.jpg', alt: 'Idée aménagement 2 vue 1', title: 'Proposition 2 - Vue A' },
+        { src: 'Cuisine-idee2.jpg', alt: 'Idée aménagement 1 vue 2', title: 'Proposition 2 - Vue B' }
+      ],
+      perso: [
+        { src: 'Map-ville.jpg', alt: 'Map Ville Vue 1', title: 'Map Ville - Vue 1' },
+        { src: 'Map-ville2.jpg', alt: 'Map Ville Vue 2', title: 'Map Ville - Vue 2' },
+        { src: 'Map-western.jpg', alt: 'Map Western Vue 1', title: 'Map Western - Vue 1' },
+        { src: 'Map-western2.jpg', alt: 'Map Western Vue 2', title: 'Map Western - Vue 2' },
+        { src: 'Map-chateau.jpg', alt: 'Map Château Vue 1', title: 'Map Château - Vue 1' },
+        { src: 'Map-chateau2.jpg', alt: 'Map Château Vue 2', title: 'Map Château - Vue 2' },
+        { src: 'Miniature1.jpg', alt: 'Miniature 1', title: 'Miniature 1' },
+        { src: 'Miniature2.jpg', alt: 'Miniature 2', title: 'Miniature 2' }
+      ]
+    };
+    
+    let currentProject = '', currentImageIndex = 0;
+    
+    function openProjectLightbox(projectName, imageIndex) {
+      currentProject = projectName;
+      currentImageIndex = imageIndex;
+      const lightbox = document.getElementById('project-lightbox');
+      const img = document.getElementById('project-image');
+      const counter = document.getElementById('image-counter');
+      const imageData = projects[projectName][imageIndex];
+      img.src = imageData.src;
+      img.alt = imageData.alt;
+      counter.textContent = `${imageIndex + 1} / ${projects[projectName].length}`;
+      updateNavigationArrows();
+      lightbox.classList.add('show');
+    }
+    
+    function closeProjectLightbox() {
+      document.getElementById('project-lightbox').classList.remove('show');
+    }
+    
+    function navigateProject(direction) {
+      const newIndex = currentImageIndex + direction;
+      const projectImages = projects[currentProject];
+      if (newIndex >= 0 && newIndex < projectImages.length) {
+        currentImageIndex = newIndex;
+        const img = document.getElementById('project-image');
+        const counter = document.getElementById('image-counter');
+        const imageData = projectImages[currentImageIndex];
+        img.src = imageData.src;
+        img.alt = imageData.alt;
+        counter.textContent = `${currentImageIndex + 1} / ${projectImages.length}`;
+        updateNavigationArrows();
+      }
+    }
+    
+    function updateNavigationArrows() {
+      const prevArrow = document.querySelector('.prev-arrow');
+      const nextArrow = document.querySelector('.next-arrow');
+      const projectImages = projects[currentProject];
+      prevArrow.classList.toggle('disabled', currentImageIndex === 0);
+      nextArrow.classList.toggle('disabled', currentImageIndex === projectImages.length - 1);
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('project-lightbox');
+      if (lightbox.classList.contains('show')) {
+        if (e.key === 'ArrowLeft') navigateProject(-1);
+        else if (e.key === 'ArrowRight') navigateProject(1);
+        else if (e.key === 'Escape') closeProjectLightbox();
+      }
+    });
+    
+    document.querySelectorAll('.lightbox').forEach(lb => {
+      const img = lb.querySelector('img');
+      if (img && img.classList.contains('zoomable')) {
+        let scale = 1, translateX = 0, translateY = 0, isDragging = false, startX, startY;
+        const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+        const maxTranslate = () => {
+          const rect = img.getBoundingClientRect();
+          const pr = lb.getBoundingClientRect();
+          return {
+            maxX: Math.max(0, (rect.width - pr.width) / 2),
+            maxY: Math.max(0, (rect.height - pr.height) / 2)
+          };
+        };
+        
+        img.addEventListener('wheel', e => {
+          e.preventDefault();
+          scale = clamp(scale + (e.deltaY > 0 ? -0.1 : 0.1), 1, 5);
+          const { maxX, maxY } = maxTranslate();
+          translateX = clamp(translateX, -maxX, maxX);
+          translateY = clamp(translateY, -maxY, maxY);
+          img.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+          if (scale === 1) {
+            translateX = 0; translateY = 0;
+            img.style.transform = 'scale(1) translate(0px, 0px)';
+          }
+          img.style.cursor = scale > 1 ? 'grab' : 'default';
+        });
+        
+        img.addEventListener('mousedown', e => {
+          if (scale > 1) { 
+            isDragging = true; 
+            startX = e.clientX - translateX; 
+            startY = e.clientY - translateY;
+            img.style.cursor = 'grabbing';
+          }
+        });
+        
+        img.addEventListener('mousemove', e => {
+          if (isDragging) {
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            const { maxX, maxY } = maxTranslate();
+            translateX = clamp(translateX, -maxX, maxX);
+            translateY = clamp(translateY, -maxY, maxY);
+            img.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+          }
+        });
+        
+        ['mouseup', 'mouseleave'].forEach(evt => 
+          img.addEventListener(evt, () => {
+            if (isDragging) {
+              isDragging = false;
+              img.style.cursor = scale > 1 ? 'grab' : 'default';
+            }
+          })
+        );
+        
+        lb.querySelector('.close').addEventListener('click', () => {
+          scale = 1; translateX = 0; translateY = 0;
+          img.style.transform = 'scale(1) translate(0,0)';
+          img.style.cursor = 'default';
+          lb.classList.remove('show');
+        });
+      }
+    });
+    
+    document.querySelectorAll('.lightbox').forEach(lightbox => {
+      lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) {
+          if (lightbox.id === 'project-lightbox') {
+            closeProjectLightbox();
+          } else {
+            const img = lightbox.querySelector('img');
+            if (img && img.classList.contains('zoomable')) resetImageTransform(img);
+            lightbox.classList.remove('show');
+          }
+        }
+      });
+    });
+    
+    // COMPARATEUR AVANT/APRÈS
+    const container = document.getElementById('beforeAfterContainer');
+    const afterImg = document.getElementById('afterImg');
+    const sliderLine = document.getElementById('sliderLine');
+    let isSliding = false, sliderPosition = 0.5;
+    
+    function updateSlider(percentage) {
+      percentage = Math.max(0, Math.min(1, percentage));
+      sliderPosition = percentage;
+      sliderLine.style.left = (percentage * 100) + '%';
+      afterImg.style.clipPath = `inset(0 ${100 - percentage * 100}% 0 0)`;
+    }
+    
+    const getMousePosition = e => (e.clientX - container.getBoundingClientRect().left) / container.getBoundingClientRect().width;
+    const getTouchPosition = e => (e.touches[0].clientX - container.getBoundingClientRect().left) / container.getBoundingClientRect().width;
+    
+    container.addEventListener('mousedown', e => { isSliding = true; updateSlider(getMousePosition(e)); e.preventDefault(); });
+    container.addEventListener('mousemove', e => { if (isSliding) updateSlider(getMousePosition(e)); });
+    document.addEventListener('mouseup', () => isSliding = false);
+    container.addEventListener('touchstart', e => { isSliding = true; updateSlider(getTouchPosition(e)); e.preventDefault(); });
+    container.addEventListener('touchmove', e => { if (isSliding) { updateSlider(getTouchPosition(e)); e.preventDefault(); } });
+    document.addEventListener('touchend', () => isSliding = false);
+    
+    updateSlider(0.5);
+    showSection('home');
+  </script>
 </body>
 </html>
