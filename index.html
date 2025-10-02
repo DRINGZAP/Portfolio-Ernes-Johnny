@@ -296,33 +296,41 @@
       .nav-button {
         display: none !important;
       }
-      
+
       /* Afficher le bouton sous le titre */
       .back-container {
         display: block !important;
       }
-      
-      /* Header centré en colonne */
+
+      /* Header avec plus d'espace et organisation verticale */
       header {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 15px 20px;
+        padding: 20px;
+        margin-bottom: 30px;
       }
-      
+
       header h1 {
         order: 2;
         font-size: 1.8em;
         margin: 10px 0 0 0;
       }
-      
+
       .back-container {
         order: 1;
-        margin-bottom: 0;
+        margin-bottom: 15px;
+        width: 100%;
       }
-      
-      #portfolio header h1 {
+
+      /* Ajustements spécifiques pour le portfolio */
+      .portfolio-section header h1 {
         font-size: 1.6em;
+      }
+
+      /* Augmenter l'espace pour éviter les chevauchements */
+      .portfolio-section, .cv-section {
+        padding-top: 60px;
       }
     }
   </style>
